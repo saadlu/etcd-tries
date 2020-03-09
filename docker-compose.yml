@@ -1,0 +1,59 @@
+version: "3"
+
+
+services:
+  etcd-0:
+    image: quay.io/coreos/etcd:latest
+    ports:
+      - 4001
+      - 2380
+      - 2379
+    environment:
+      - GOMAXPROCS=2
+    command: >-
+      /usr/local/bin/etcd
+      -name etcd-0
+      -advertise-client-urls http://etcd-0:2379,http://etcd-0:4001
+      -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
+      -initial-advertise-peer-urls http://etcd-0:2380
+      -listen-peer-urls http://0.0.0.0:2380
+      -initial-cluster-token etcd-cluster
+      -initial-cluster etcd-0=http://etcd-0:2380,etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380
+      -initial-cluster-state new
+  etcd-1:
+    image: quay.io/coreos/etcd:latest
+    ports:
+      - 4001
+      - 2380
+      - 2379
+    environment:
+      - GOMAXPROCS=2
+    command: >-
+      /usr/local/bin/etcd
+      -name etcd-1
+      -advertise-client-urls http://etcd-1:2379,http://etcd-1:4001
+      -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
+      -initial-advertise-peer-urls http://etcd-1:2380
+      -listen-peer-urls http://0.0.0.0:2380
+      -initial-cluster-token etcd-cluster
+      -initial-cluster etcd-0=http://etcd-0:2380,etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380
+      -initial-cluster-state new
+
+  etcd-2:
+    image: quay.io/coreos/etcd:latest
+    ports:
+      - 4001
+      - 2380
+      - 2379
+    environment:
+      - GOMAXPROCS=2
+    command: >-
+      /usr/local/bin/etcd
+      -name etcd-2
+      -advertise-client-urls http://etcd-2:2379,http://etcd-2:4001
+      -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001
+      -initial-advertise-peer-urls http://etcd-2:2380
+      -listen-peer-urls http://0.0.0.0:2380
+      -initial-cluster-token etcd-cluster
+      -initial-cluster etcd-0=http://etcd-0:2380,etcd-1=http://etcd-1:2380,etcd-2=http://etcd-2:2380
+      -initial-cluster-state new
